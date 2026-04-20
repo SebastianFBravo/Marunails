@@ -71,26 +71,19 @@ nav {
     text-decoration: none;
 }
 .nav-brand-logo {
-    width: 34px;
-    height: 34px;
-    opacity: 0.92;
+    height: 44px;
+    width: auto;
 }
 .nav-brand-text { display: flex; flex-direction: column; line-height: 1; }
-.nav-brand-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 500;
-    font-size: 16px;
-    letter-spacing: 2.5px;
-    color: #F5EDE6;
-    text-transform: uppercase;
-}
 .nav-brand-sub {
-    font-size: 8.5px;
-    letter-spacing: 2px;
-    color: rgba(245,237,230,0.45);
+    font-size: 8px;
+    letter-spacing: 2.5px;
+    color: rgba(245,237,230,0.40);
     text-transform: uppercase;
-    margin-top: 3px;
     font-family: 'Inter', sans-serif;
+    align-self: flex-end;
+    margin-bottom: 4px;
+    margin-left: 4px;
 }
 
 nav a {
@@ -438,20 +431,8 @@ select {
 
 <nav>
     <a href="/" class="nav-brand">
-        <svg class="nav-brand-logo" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- M letter -->
-            <path d="M45 155 L45 55 L100 120 L155 55 L155 155" stroke="#F5EDE6" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-            <!-- dot -->
-            <circle cx="100" cy="30" r="7" fill="#F5EDE6"/>
-            <!-- swoosh bottom left -->
-            <path d="M45 155 Q20 170 30 185" stroke="#F5EDE6" stroke-width="7" stroke-linecap="round" fill="none"/>
-            <!-- swoosh bottom right -->
-            <path d="M155 95 Q185 110 175 155 Q165 185 130 175" stroke="#F5EDE6" stroke-width="7" stroke-linecap="round" fill="none"/>
-        </svg>
-        <div class="nav-brand-text">
-            <span class="nav-brand-name">MaruNails</span>
-            <span class="nav-brand-sub">Gestión</span>
-        </div>
+        <img src="{{ url_for('static', filename='Logotipo principal_Mesa de trabajo 1.PNG') }}" alt="MaruNails" class="nav-brand-logo">
+        <span class="nav-brand-sub">Gestión</span>
     </a>
 
     <div class="nav-links">
