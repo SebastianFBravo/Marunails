@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from datetime import datetime, date
 import os
 import json
+import traceback
 
 import gspread
 from google.oauth2.service_account import Credentials
@@ -104,11 +105,18 @@ def corte():
         ]
 
         try:
+            print(f'[CORTE] Intentando escribir fila: {row}', flush=True)
             gc = get_sheets_client()
-            ws = gc.open_by_key(SPREADSHEET_ID).worksheet('INPUT_CORTES')
+            sh = gc.open_by_key(SPREADSHEET_ID)
+            print(f'[CORTE] Sheet abierto: {sh.title}', flush=True)
+            ws = sh.worksheet('INPUT_CORTES')
+            print(f'[CORTE] Worksheet encontrado: {ws.title}', flush=True)
             ws.append_row(row, value_input_option='USER_ENTERED')
+            print(f'[CORTE] Fila escrita OK', flush=True)
             flash(f'Corte registrado — {staff_nombre} · {servicio} · ${total_cobrado:,.0f}', 'success')
         except Exception as e:
+            print(f'[CORTE] ERROR: {e}', flush=True)
+            print(traceback.format_exc(), flush=True)
             flash(f'Error al guardar en Google Sheets: {e}', 'error')
 
         return redirect(url_for('corte'))
