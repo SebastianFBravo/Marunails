@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block title %}Registrar Gasto — MaruNails{% endblock %}
+{% block content %}
+
+<div class="page-header">
+    <div class="page-header-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/>
+        </svg>
+    </div>
+    <div>
+        <h1>Registrar Gasto</h1>
+        <div class="page-header-sub">Se guarda directo en el Google Sheet</div>
+    </div>
+</div>
+
+<div class="card">
+    <form method="POST" action="/gasto">
+
+        <div class="form-grid">
+
+            <!-- Fecha -->
+            <div class="form-group">
+                <label>Fecha <span class="req">*</span></label>
+                <input type="date" name="fecha" value="{{ today }}" required>
+            </div>
+
+            <!-- Categoría -->
+            <div class="form-group">
+                <label>Categoría <span class="req">*</span></label>
+                <select name="categoria" required>
+                    <option value="" disabled selected>Seleccioná...</option>
+                    {% for c in categorias %}
+                    <option value="{{ c }}">{{ c }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Subcategoría -->
+            <div class="form-group">
+                <label>Subcategoría</label>
+                <input type="text" name="subcategoria" placeholder="Opcional...">
+            </div>
+
+            <!-- Proveedor / Detalle -->
+            <div class="form-group">
+                <label>Proveedor / Detalle</label>
+                <input type="text" name="proveedor" placeholder="ej: Amazon, Probell...">
+            </div>
+
+            <!-- Descripción -->
+            <div class="form-group full">
+                <label>Descripción</label>
+                <input type="text" name="descripcion" placeholder="ej: base, top coat, guantes...">
+            </div>
+
+            <!-- Moneda -->
+            <div class="form-group">
+                <label>Moneda</label>
+                <div class="moneda-toggle">
+                    <input type="radio" name="moneda" id="mxn" value="MXN" checked>
+                    <label for="mxn">MXN $</label>
+                    <input type="radio" name="moneda" id="usd" value="USD">
+                    <label for="usd">USD $</label>
+                </div>
+            </div>
+
+            <!-- Medio de pago -->
+            <div class="form-group">
+                <label>Medio de pago <span class="req">*</span></label>
+                <select name="medio_pago" required>
+                    <option value="" disabled selected>Seleccioná...</option>
+                    {% for m in medios %}
+                    <option value="{{ m }}">{{ m }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Importe -->
+            <div class="form-group">
+                <label>Importe <span class="req">*</span></label>
+                <input type="number" name="importe" min="0" step="1" placeholder="0" required>
+            </div>
+
+            <!-- Notas -->
+            <div class="form-group full">
+                <label>Notas</label>
+                <input type="text" name="notas" placeholder="Opcional...">
+            </div>
+
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Guardar en Google Sheets
+        </button>
+
+    </form>
+</div>
+
+{% endblock %}

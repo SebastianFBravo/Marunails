@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}Registrar Corte — MaruNails{% endblock %}
+{% block content %}
+
+<div class="page-header">
+    <div class="page-header-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M12 8v4l3 3"/>
+        </svg>
+    </div>
+    <div>
+        <h1>Registrar Corte</h1>
+        <div class="page-header-sub">Se guarda directo en el Google Sheet</div>
+    </div>
+</div>
+
+<div class="card">
+    <form method="POST" action="/corte">
+
+        <div class="form-grid">
+
+            <!-- Fecha -->
+            <div class="form-group">
+                <label>Fecha <span class="req">*</span></label>
+                <input type="date" name="fecha" value="{{ today }}" required>
+            </div>
+
+            <!-- Cliente -->
+            <div class="form-group">
+                <label>Cliente</label>
+                <input type="text" name="cliente" placeholder="Walk in">
+            </div>
+
+            <!-- Staff -->
+            <div class="form-group">
+                <label>Staff <span class="req">*</span></label>
+                <select name="staff" required>
+                    <option value="" disabled selected>Seleccioná...</option>
+                    {% for s in staff %}
+                    <option value="{{ s.nombre }}">{{ s.nombre }} ({{ (s.comision * 100)|int }}%)</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Servicio -->
+            <div class="form-group">
+                <label>Servicio <span class="req">*</span></label>
+                <select name="servicio" required>
+                    <option value="" disabled selected>Seleccioná...</option>
+                    {% for sv in servicios %}
+                    <option value="{{ sv }}">{{ sv }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Moneda -->
+            <div class="form-group">
+                <label>Moneda</label>
+                <div class="moneda-toggle">
+                    <input type="radio" name="moneda" id="mxn" value="MXN" checked>
+                    <label for="mxn">MXN $</label>
+                    <input type="radio" name="moneda" id="usd" value="USD">
+                    <label for="usd">USD $</label>
+                </div>
+            </div>
+
+            <!-- Medio de pago -->
+            <div class="form-group">
+                <label>Medio de pago <span class="req">*</span></label>
+                <select name="medio_pago" required>
+                    <option value="" disabled selected>Seleccioná...</option>
+                    {% for m in medios %}
+                    <option value="{{ m }}">{{ m }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Total cobrado -->
+            <div class="form-group">
+                <label>Total cobrado <span class="req">*</span></label>
+                <input type="number" name="total_cobrado" min="0" step="1" placeholder="0" required>
+            </div>
+
+            <!-- Propina -->
+            <div class="form-group">
+                <label>Propina</label>
+                <input type="number" name="propina" min="0" step="1" placeholder="0">
+            </div>
+
+            <!-- Notas -->
+            <div class="form-group full">
+                <label>Notas</label>
+                <input type="text" name="notas" placeholder="Opcional...">
+            </div>
+
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Guardar en Google Sheets
+        </button>
+
+    </form>
+</div>
+
+{% endblock %}

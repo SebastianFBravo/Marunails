@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}MaruNails{% endblock %}</title>
+<meta name="theme-color" content="#38471f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MaruNails">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --green:        #4a5c30;
+    --green-dark:   #38471f;
+    --green-mid:    #526735;
+    --green-pale:   #eef3e6;
+    --cream:        #f5edda;
+    --bg:           #ede5cf;
+    --text:         #1a1a1a;
+    --muted:        #777;
+    --border:       #d5ccb5;
+    --card-bg:      #ffffff;
+    --red:          #c0392b;
+    --red-light:    #fde8e8;
+    --red-text:     #8b2020;
+    --yellow:       #92690a;
+    --yellow-light: #fff8e1;
+    --ok-light:     #daf0e3;
+    --ok-text:      #1e6a3a;
+    --shadow-sm:    0 1px 3px rgba(0,0,0,0.07);
+    --shadow:       0 2px 12px rgba(0,0,0,0.08);
+    --shadow-lg:    0 8px 32px rgba(0,0,0,0.10);
+    --radius-sm:    5px;
+    --radius:       10px;
+    --radius-lg:    14px;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ─── NAV ─────────────────────────────────────────── */
+nav {
+    background: linear-gradient(150deg, #2e3b1a 0%, var(--green-dark) 40%, var(--green-mid) 100%);
+    display: flex;
+    align-items: center;
+    padding: 0 28px;
+    height: 58px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.28);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    gap: 2px;
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding-right: 22px;
+    border-right: 1px solid rgba(255,255,255,0.15);
+    margin-right: 8px;
+    flex-shrink: 0;
+    text-decoration: none;
+}
+.nav-brand-text { display: flex; flex-direction: column; line-height: 1; }
+.nav-brand-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 13.5px;
+    letter-spacing: 1.5px;
+    color: #fff;
+}
+.nav-brand-sub {
+    font-size: 9px;
+    letter-spacing: 1.2px;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    margin-top: 2px;
+}
+
+nav a {
+    color: rgba(255,255,255,0.72);
+    text-decoration: none;
+    padding: 0 11px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+    border-radius: 6px;
+    position: relative;
+}
+nav a svg { opacity: 0.75; flex-shrink: 0; transition: opacity 0.15s; }
+nav a:hover { background: rgba(255,255,255,0.09); color: #fff; }
+nav a:hover svg { opacity: 1; }
+nav a.active { background: rgba(255,255,255,0.14); color: #fff; font-weight: 600; }
+nav a.active svg { opacity: 1; }
+nav a.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 10px; right: 10px;
+    height: 2.5px;
+    background: rgba(255,255,255,0.60);
+    border-radius: 3px 3px 0 0;
+}
+
+/* ─── HAMBURGER ──────────────────────────────────── */
+.nav-hamburger {
+    display: none;
+    margin-left: auto;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    transition: background 0.15s;
+}
+.nav-hamburger:hover { background: rgba(255,255,255,0.1); }
+.nav-hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: rgba(255,255,255,0.85);
+    margin: 4px 0;
+    border-radius: 2px;
+    transition: all 0.25s;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+.nav-links { display: flex; align-items: center; gap: 2px; }
+
+/* ─── MOBILE MENU ─────────────────────────────────── */
+.nav-mobile-menu {
+    display: none;
+    position: fixed;
+    top: 58px; left: 0; right: 0;
+    background: linear-gradient(180deg, #2e3b1a 0%, #38471f 100%);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+    z-index: 99;
+    padding: 8px 0 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.nav-mobile-menu.open { display: block; }
+.nav-mobile-menu a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 24px;
+    color: rgba(255,255,255,0.78);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    transition: background 0.15s, color 0.15s;
+    border-left: 3px solid transparent;
+}
+.nav-mobile-menu a svg { opacity: 0.75; flex-shrink: 0; }
+.nav-mobile-menu a:hover,
+.nav-mobile-menu a.active {
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    border-left-color: rgba(255,255,255,0.5);
+}
+.nav-mobile-menu a.active svg { opacity: 1; }
+
+/* ─── RESPONSIVE ─────────────────────────────────── */
+@media (max-width: 700px) {
+    nav { padding: 0 16px; }
+    .nav-links { display: none; }
+    .nav-hamburger { display: block; }
+    main { padding: 20px 14px; }
+    .card { padding: 16px; }
+    .nav-brand { border-right: none; padding-right: 0; }
+    .nav-brand-sub { display: none; }
+    .form-card { max-width: 100% !important; }
+    .hide-mobile { display: none !important; }
+}
+
+/* ─── MAIN ───────────────────────────────────────── */
+main {
+    padding: 32px 36px;
+    max-width: 860px;
+    margin: 0 auto;
+}
+
+/* ─── PAGE HEADER ─────────────────────────────────── */
+.page-header {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 28px;
+}
+.page-header-icon {
+    width: 42px; height: 42px;
+    background: linear-gradient(145deg, var(--green-mid) 0%, var(--green-dark) 100%);
+    border-radius: var(--radius);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 3px 10px rgba(56,71,31,0.32);
+}
+.page-header h1 {
+    margin: 0;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--green-dark);
+    letter-spacing: -0.4px;
+}
+.page-header-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 2px;
+}
+
+/* ─── ALERTS ─────────────────────────────────────── */
+.alert {
+    padding: 12px 16px;
+    border-radius: var(--radius);
+    margin-bottom: 22px;
+    font-size: 13.5px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    line-height: 1.4;
+}
+.alert svg { flex-shrink: 0; }
+.alert-success { background: var(--ok-light); color: var(--ok-text); border-left: 4px solid var(--green); }
+.alert-error   { background: var(--red-light); color: var(--red-text); border-left: 4px solid var(--red); }
+
+/* ─── CARDS ──────────────────────────────────────── */
+.card {
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    padding: 26px 30px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(0,0,0,0.045);
+}
+
+/* ─── SECTION LABEL ──────────────────────────────── */
+.section-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.9px;
+    color: var(--green-mid);
+    margin-bottom: 16px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* ─── FORMULARIOS ─────────────────────────────────── */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 24px;
+}
+.form-grid .full { grid-column: 1 / -1; }
+@media (max-width: 600px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .form-grid .full { grid-column: 1; }
+}
+
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+label {
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #555;
+    font-family: 'Inter', sans-serif;
+}
+label .req { color: var(--red); margin-left: 2px; }
+
+select, input[type="number"], input[type="text"], input[type="date"] {
+    width: 100%;
+    padding: 10px 13px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    background: #fff;
+    color: var(--text);
+    transition: border-color 0.15s, box-shadow 0.15s;
+    -webkit-appearance: none;
+}
+select:focus, input:focus {
+    outline: none;
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px rgba(74,92,48,0.12);
+}
+select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23777' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+
+/* ─── MONEDA TOGGLE ──────────────────────────────── */
+.moneda-toggle { display: flex; gap: 8px; }
+.moneda-toggle input[type="radio"] { display: none; }
+.moneda-toggle label {
+    flex: 1;
+    text-align: center;
+    padding: 9px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    transition: all 0.15s;
+    text-transform: none;
+    letter-spacing: 0;
+}
+.moneda-toggle input[type="radio"]:checked + label {
+    border-color: var(--green);
+    background: var(--green-pale);
+    color: var(--green-dark);
+}
+
+/* ─── BOTONES ─────────────────────────────────────── */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 12px 28px;
+    border-radius: var(--radius);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    font-family: 'Inter', sans-serif;
+    transition: opacity 0.15s, transform 0.1s, box-shadow 0.15s;
+    letter-spacing: 0.2px;
+    width: 100%;
+    margin-top: 8px;
+}
+.btn:active { transform: translateY(1px); }
+.btn-primary {
+    background: linear-gradient(145deg, var(--green-mid) 0%, var(--green-dark) 100%);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(56,71,31,0.35);
+}
+.btn-primary:hover { opacity: 0.87; box-shadow: 0 4px 14px rgba(56,71,31,0.40); }
+
+/* ─── QUICK LINKS ─────────────────────────────────── */
+.quick-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 28px;
+}
+@media (max-width: 500px) { .quick-links { grid-template-columns: 1fr; } }
+
+.quick-link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 22px;
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    color: var(--text);
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(0,0,0,0.045);
+    transition: box-shadow 0.15s, transform 0.1s;
+}
+.quick-link:hover { box-shadow: var(--shadow-lg); transform: translateY(-1px); }
+.quick-link-icon {
+    width: 46px; height: 46px;
+    background: linear-gradient(145deg, var(--green-mid) 0%, var(--green-dark) 100%);
+    border-radius: var(--radius);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(56,71,31,0.28);
+}
+.quick-link-text strong {
+    display: block;
+    font-weight: 700;
+    font-size: 14px;
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--green-dark);
+}
+.quick-link-text span { font-size: 12px; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<nav>
+    <a href="/" class="nav-brand">
+        <div class="nav-brand-text">
+            <span class="nav-brand-name">MARUNAILS</span>
+            <span class="nav-brand-sub">Gestión</span>
+        </div>
+    </a>
+
+    <div class="nav-links">
+        <a href="/" {% if request.path == '/' %}class="active"{% endif %}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+            </svg>
+            Inicio
+        </a>
+        <a href="/corte" {% if request.path == '/corte' %}class="active"{% endif %}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M12 8v4l3 3"/>
+            </svg>
+            Registrar Corte
+        </a>
+        <a href="/gasto" {% if request.path == '/gasto' %}class="active"{% endif %}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/>
+            </svg>
+            Registrar Gasto
+        </a>
+    </div>
+
+    <button class="nav-hamburger" id="navHamburger" aria-label="Menú">
+        <span></span><span></span><span></span>
+    </button>
+</nav>
+
+<div class="nav-mobile-menu" id="navMobileMenu">
+    <a href="/" {% if request.path == '/' %}class="active"{% endif %}>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+        </svg>
+        Inicio
+    </a>
+    <a href="/corte" {% if request.path == '/corte' %}class="active"{% endif %}>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M12 8v4l3 3"/>
+        </svg>
+        Registrar Corte
+    </a>
+    <a href="/gasto" {% if request.path == '/gasto' %}class="active"{% endif %}>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/>
+        </svg>
+        Registrar Gasto
+    </a>
+</div>
+
+<script>
+const btn  = document.getElementById('navHamburger');
+const menu = document.getElementById('navMobileMenu');
+btn.addEventListener('click', () => {
+    btn.classList.toggle('open');
+    menu.classList.toggle('open');
+});
+document.querySelectorAll('.nav-mobile-menu a').forEach(l => {
+    l.addEventListener('click', () => {
+        btn.classList.remove('open');
+        menu.classList.remove('open');
+    });
+});
+</script>
+
+<main>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">
+        {% if category == 'success' %}
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        {% else %}
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        {% endif %}
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+{% block content %}{% endblock %}
+</main>
+
+</body>
+</html>

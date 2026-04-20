@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Inicio — MaruNails{% endblock %}
+{% block content %}
+
+<div class="page-header">
+    <div class="page-header-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+        </svg>
+    </div>
+    <div>
+        <h1>Bienvenida</h1>
+        <div class="page-header-sub">¿Qué querés registrar hoy?</div>
+    </div>
+</div>
+
+<div class="quick-links">
+    <a href="/corte" class="quick-link">
+        <div class="quick-link-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M12 8v4l3 3"/>
+            </svg>
+        </div>
+        <div class="quick-link-text">
+            <strong>Registrar Corte</strong>
+            <span>Cargar un servicio del día</span>
+        </div>
+    </a>
+    <a href="/gasto" class="quick-link">
+        <div class="quick-link-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/>
+            </svg>
+        </div>
+        <div class="quick-link-text">
+            <strong>Registrar Gasto</strong>
+            <span>Cargar un gasto del negocio</span>
+        </div>
+    </a>
+</div>
+
+{% endblock %}
