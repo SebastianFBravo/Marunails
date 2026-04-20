@@ -65,6 +65,16 @@ def get_sheets_client():
     return gspread.authorize(creds)
 
 
+def append_after_last_data(ws, row):
+    all_vals = ws.get_all_values()
+    last_row = 0
+    for i, r in enumerate(all_vals):
+        if any(c.strip() for c in r):
+            last_row = i + 1
+    next_row = last_row + 1
+    ws.update(f'A{next_row}', [row], value_input_option='USER_ENTERED')
+
+
 # ── DASHBOARD ──────────────────────────────────────────────────────────────────
 @app.route('/')
 def index():
@@ -111,7 +121,7 @@ def corte():
             print(f'[CORTE] Sheet abierto: {sh.title}', flush=True)
             ws = sh.worksheet('INPUT_CORTES')
             print(f'[CORTE] Worksheet encontrado: {ws.title}', flush=True)
-            ws.append_row(row, value_input_option='USER_ENTERED', table_range='A5')
+            append_after_last_data(ws, row)
             print(f'[CORTE] Fila escrita OK', flush=True)
             flash(f'Corte registrado — {staff_nombre} · {servicio} · ${total_cobrado:,.0f}', 'success')
         except Exception as e:
@@ -160,7 +170,7 @@ def gasto():
         try:
             gc = get_sheets_client()
             ws = gc.open_by_key(SPREADSHEET_ID).worksheet('INPUT_GASTOS')
-            ws.append_row(row, value_input_option='USER_ENTERED', table_range='A5')
+            append_after_last_data(ws, row)
             flash(f'Gasto registrado — {categoria} · ${importe:,.0f}', 'success')
         except Exception as e:
             flash(f'Error al guardar en Google Sheets: {e}', 'error')
