@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+{% block title %}Cashflow — MaruNails{% endblock %}
+{% block content %}
+
+<style>
+.cf-main { max-width: 1100px; }
+
+.cf-table-wrap {
+    overflow-x: auto;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(62,36,24,0.07);
+}
+
+table.cf {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card-bg);
+    font-size: 13px;
+}
+
+table.cf thead tr.group-row th {
+    background: var(--brown-dark);
+    color: rgba(245,237,230,0.85);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 10px 16px 8px;
+    text-align: center;
+    border-right: 2px solid rgba(255,255,255,0.08);
+}
+table.cf thead tr.group-row th:first-child {
+    text-align: left;
+    border-right: 2px solid rgba(255,255,255,0.15);
+}
+
+table.cf thead tr.col-row th {
+    background: var(--brown);
+    color: rgba(245,237,230,0.75);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    text-align: right;
+    white-space: nowrap;
+    border-right: 1px solid rgba(255,255,255,0.07);
+}
+table.cf thead tr.col-row th:first-child {
+    text-align: left;
+    border-right: 2px solid rgba(255,255,255,0.15);
+}
+table.cf thead tr.col-row th.group-end {
+    border-right: 2px solid rgba(255,255,255,0.15);
+}
+
+table.cf tbody tr {
+    border-bottom: 1px solid var(--sand);
+    transition: background 0.15s;
+}
+table.cf tbody tr:last-child { border-bottom: none; }
+table.cf tbody tr:hover { background: var(--brown-pale); }
+table.cf tbody tr.current-month {
+    background: #fdf5ec;
+}
+table.cf tbody tr.current-month td.mes-cell {
+    font-weight: 600;
+    color: var(--brown-dark);
+}
+table.cf tbody tr.future { opacity: 0.4; }
+
+table.cf td {
+    padding: 13px 16px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    border-right: 1px solid rgba(226,213,203,0.5);
+    color: var(--text);
+}
+table.cf td.mes-cell {
+    text-align: left;
+    font-weight: 500;
+    color: var(--brown-dark);
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    border-right: 2px solid var(--sand);
+    white-space: nowrap;
+}
+table.cf td.group-end {
+    border-right: 2px solid var(--sand);
+}
+table.cf td.total-col {
+    font-weight: 600;
+    color: var(--brown-dark);
+}
+table.cf td.saldo-pos { color: #2a6635; font-weight: 500; }
+table.cf td.saldo-neg { color: var(--red); font-weight: 500; }
+
+.cf-badge-mes {
+    display: inline-block;
+    background: var(--brown);
+    color: #FAF6F0;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 20px;
+    margin-left: 6px;
+    vertical-align: middle;
+    font-family: 'Inter', sans-serif;
+}
+
+.cf-updated {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 12px;
+    text-align: right;
+    letter-spacing: 0.3px;
+}
+</style>
+
+<div class="page-header">
+    <div class="page-header-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </svg>
+    </div>
+    <div>
+        <h1>Cashflow 2026</h1>
+        <div class="page-header-sub">Datos en tiempo real desde Google Sheets · CALC_CASHFLOW</div>
+    </div>
+</div>
+
+{% if meses %}
+<div class="cf-table-wrap" style="max-width:1100px;">
+    <table class="cf">
+        <thead>
+            <tr class="group-row">
+                <th rowspan="2" style="text-align:left; min-width:90px;">Mes</th>
+                <th colspan="3">Ingresos</th>
+                <th colspan="2" style="border-left:2px solid rgba(255,255,255,0.08)">Gastos</th>
+                <th colspan="2" style="border-left:2px solid rgba(255,255,255,0.08)">Saldo Final</th>
+            </tr>
+            <tr class="col-row">
+                <th>Caja</th>
+                <th>Banco</th>
+                <th class="group-end">Total</th>
+                <th>Caja</th>
+                <th class="group-end">Banco</th>
+                <th>Caja</th>
+                <th>Banco</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for m in meses %}
+            {% set tiene_datos = m.ing_total > 0 or m.gasto_caja > 0 or m.gasto_banco > 0 %}
+            {% set es_futuro = m.mes > mes_actual %}
+            <tr class="{% if m.mes == mes_actual %}current-month{% elif es_futuro %}future{% endif %}">
+                <td class="mes-cell">
+                    {{ m.mes }}
+                    {% if m.mes == mes_actual %}
+                        <span class="cf-badge-mes">Actual</span>
+                    {% endif %}
+                </td>
+
+                <td>{% if m.ing_caja %}${{ '{:,.0f}'.format(m.ing_caja) }}{% else %}—{% endif %}</td>
+                <td>{% if m.ing_banco %}${{ '{:,.0f}'.format(m.ing_banco) }}{% else %}—{% endif %}</td>
+                <td class="total-col group-end">{% if m.ing_total %}${{ '{:,.0f}'.format(m.ing_total) }}{% else %}—{% endif %}</td>
+
+                <td>{% if m.gasto_caja %}${{ '{:,.0f}'.format(m.gasto_caja) }}{% else %}—{% endif %}</td>
+                <td class="group-end">{% if m.gasto_banco %}${{ '{:,.0f}'.format(m.gasto_banco) }}{% else %}—{% endif %}</td>
+
+                {% set sc = m.saldo_caja %}
+                {% set sb = m.saldo_banco %}
+                <td class="{% if sc > 0 %}saldo-pos{% elif sc < 0 %}saldo-neg{% endif %}">
+                    {% if sc %}${{ '{:,.0f}'.format(sc) }}{% else %}—{% endif %}
+                </td>
+                <td class="{% if sb > 0 %}saldo-pos{% elif sb < 0 %}saldo-neg{% endif %}">
+                    {% if sb %}${{ '{:,.0f}'.format(sb) }}{% else %}—{% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<p class="cf-updated">Actualizado al abrir la página · valores en MXN</p>
+{% else %}
+<div class="card" style="text-align:center; padding:48px; color:var(--muted);">
+    No se pudieron cargar los datos. Verificá la conexión con Google Sheets.
+</div>
+{% endif %}
+
+{% endblock %}

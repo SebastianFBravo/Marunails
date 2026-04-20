@@ -454,6 +454,12 @@ select {
             </svg>
             Registrar Gasto
         </a>
+        <a href="/cashflow" {% if request.path == '/cashflow' %}class="active"{% endif %}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+            Cashflow
+        </a>
     </div>
 
     <button class="nav-hamburger" id="navHamburger" aria-label="Menú">
@@ -479,6 +485,12 @@ select {
             <circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/>
         </svg>
         Registrar Gasto
+    </a>
+    <a href="/cashflow" {% if request.path == '/cashflow' %}class="active"{% endif %}>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </svg>
+        Cashflow
     </a>
 </div>
 

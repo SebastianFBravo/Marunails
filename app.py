@@ -183,6 +183,47 @@ def gasto():
                            today=date.today().isoformat())
 
 
+# ── CASHFLOW ───────────────────────────────────────────────────────────────────
+@app.route('/cashflow')
+def cashflow():
+    def parse_val(s):
+        if not s or not str(s).strip():
+            return 0.0
+        s = str(s).strip().replace('$', '').replace(' ', '').replace('\xa0', '')
+        if ',' in s:
+            s = s.replace('.', '').replace(',', '.')
+        try:
+            return float(s)
+        except Exception:
+            return 0.0
+
+    meses = []
+    try:
+        gc = get_sheets_client()
+        ws = gc.open_by_key(SPREADSHEET_ID).worksheet('CALC_CASHFLOW')
+        rows = ws.get_all_values()
+        for r in rows[5:17]:
+            if not r or not r[0].strip():
+                continue
+            def g(i):
+                return r[i] if len(r) > i else ''
+            meses.append({
+                'mes':         g(0),
+                'ing_caja':    parse_val(g(1)),
+                'ing_banco':   parse_val(g(2)),
+                'ing_total':   parse_val(g(4)),
+                'gasto_caja':  parse_val(g(5)),
+                'gasto_banco': parse_val(g(6)),
+                'saldo_caja':  parse_val(g(11)),
+                'saldo_banco': parse_val(g(12)),
+            })
+    except Exception as e:
+        flash(f'Error cargando cashflow: {e}', 'error')
+
+    mes_actual = date.today().strftime('%Y-%m')
+    return render_template('cashflow.html', meses=meses, mes_actual=mes_actual)
+
+
 if __name__ == '__main__':
     print('\n  MaruNails corriendo en http://localhost:5000\n')
     app.run(debug=False, host='0.0.0.0', port=5000)
