@@ -2,20 +2,71 @@
 {% block title %}Inicio — MaruNails{% endblock %}
 {% block content %}
 
-<div class="page-header">
-    <div class="page-header-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-            <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
-        </svg>
-    </div>
-    <div>
-        <h1>Bienvenida</h1>
-        <div class="page-header-sub">¿Qué querés registrar hoy?</div>
-    </div>
+<style>
+.home-hero {
+    text-align: center;
+    padding: 40px 20px 32px;
+}
+.home-hero-logo {
+    height: 130px;
+    width: auto;
+    mix-blend-mode: multiply;
+    display: block;
+    margin: 0 auto 18px;
+    opacity: 0.92;
+}
+.home-hero-greeting {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    color: var(--brown-mid);
+    margin-bottom: 6px;
+}
+.home-hero-divider {
+    width: 40px;
+    height: 1px;
+    background: var(--brown-mid);
+    margin: 14px auto 28px;
+    opacity: 0.35;
+}
+
+.quick-links-label {
+    text-align: center;
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+    font-family: 'Inter', sans-serif;
+}
+
+.quick-link {
+    border-top: 2px solid var(--brown-pale);
+    transition: box-shadow 0.2s, transform 0.15s, border-color 0.2s;
+}
+.quick-link:hover {
+    border-top-color: var(--brown-mid);
+}
+
+@media (max-width: 600px) {
+    .home-hero-logo { height: 100px; }
+    .home-hero { padding: 28px 16px 20px; }
+    .quick-links { grid-template-columns: 1fr !important; }
+}
+</style>
+
+<div class="home-hero">
+    <img src="{{ url_for('static', filename='Logotipo principal-05.PNG') }}"
+         alt="MaruNails" class="home-hero-logo">
+    <div class="home-hero-greeting">Bienvenida</div>
+    <div class="home-hero-divider"></div>
 </div>
 
-<div class="quick-links">
+<p class="quick-links-label">¿Qué querés hacer?</p>
+
+<div class="quick-links" style="grid-template-columns: repeat(3, 1fr); --ql-cols: 3;">
     <a href="/corte" class="quick-link">
         <div class="quick-link-icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

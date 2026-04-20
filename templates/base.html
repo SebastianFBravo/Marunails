@@ -46,6 +46,24 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+body::before {
+    content: '';
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(72vw, 620px);
+    height: min(72vw, 620px);
+    background-image: url("{{ url_for('static', filename='Maru LOGO.PNG') }}");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.05;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    z-index: 0;
+}
+
 /* ─── NAV ─────────────────────────────────────────── */
 nav {
     background: var(--brown-dark);
@@ -198,6 +216,8 @@ main {
     padding: 36px 40px;
     max-width: 860px;
     margin: 0 auto;
+    position: relative;
+    z-index: 1;
 }
 
 /* ─── PAGE HEADER ─────────────────────────────────── */
