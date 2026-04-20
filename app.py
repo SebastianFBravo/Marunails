@@ -111,7 +111,7 @@ def corte():
             print(f'[CORTE] Sheet abierto: {sh.title}', flush=True)
             ws = sh.worksheet('INPUT_CORTES')
             print(f'[CORTE] Worksheet encontrado: {ws.title}', flush=True)
-            ws.append_row(row, value_input_option='USER_ENTERED')
+            ws.append_row(row, value_input_option='USER_ENTERED', table_range='A5')
             print(f'[CORTE] Fila escrita OK', flush=True)
             flash(f'Corte registrado — {staff_nombre} · {servicio} · ${total_cobrado:,.0f}', 'success')
         except Exception as e:
@@ -160,7 +160,7 @@ def gasto():
         try:
             gc = get_sheets_client()
             ws = gc.open_by_key(SPREADSHEET_ID).worksheet('INPUT_GASTOS')
-            ws.append_row(row, value_input_option='USER_ENTERED')
+            ws.append_row(row, value_input_option='USER_ENTERED', table_range='A5')
             flash(f'Gasto registrado — {categoria} · ${importe:,.0f}', 'success')
         except Exception as e:
             flash(f'Error al guardar en Google Sheets: {e}', 'error')
